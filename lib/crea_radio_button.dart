@@ -1,16 +1,17 @@
 library crea_radio_button;
+
 import 'package:flutter/material.dart';
 
 /// [RadioOption] - an option passed to the [RadioButtonGroup]
 class RadioOption {
   /// an actual value of the option
   final String value;
+
   /// label of the option -> is rendered on the radio button
   final String text;
 
   RadioOption(this.value, this.text);
 }
-
 
 /// Group of radio buttons, where only one option can be selected
 /// Requires list of [options] and [callback] function
@@ -55,16 +56,16 @@ class RadioButtonGroup extends StatefulWidget {
 
   const RadioButtonGroup(
       {Key? key,
-        required this.options,
-        required this.callback,
-        this.selectedColor,
-        this.mainColor = Colors.grey,
-        this.vertical = false,
-        this.buttonHeight = 50,
-        this.buttonWidth = 50,
-        this.circular = false,
-        this.spaceBetween = 8.0,
-        this.defaultIdx = 0})
+      required this.options,
+      required this.callback,
+      this.selectedColor,
+      this.mainColor = Colors.grey,
+      this.vertical = false,
+      this.buttonHeight = 50,
+      this.buttonWidth = 50,
+      this.circular = false,
+      this.spaceBetween = 8.0,
+      this.defaultIdx = 0})
       : super(key: key);
 
   @override
@@ -139,12 +140,12 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
     List<Widget> buttons = getRadioButtons(widget.options, widget.vertical);
     return widget.vertical
         ? Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: buttons,
-    )
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: buttons,
+          )
         : Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: buttons);
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: buttons);
   }
 }
 
@@ -189,7 +190,6 @@ class _RadioButton extends StatelessWidget {
   }
 }
 
-
 class _BasicButton extends StatelessWidget {
   final Function callback;
   final String label;
@@ -200,12 +200,12 @@ class _BasicButton extends StatelessWidget {
 
   const _BasicButton(
       {Key? key,
-        required this.callback,
-        required this.label,
-        this.height = 50,
-        this.width = 150,
-        this.radius = 0,
-        this.color})
+      required this.callback,
+      required this.label,
+      this.height = 50,
+      this.width = 150,
+      this.radius = 0,
+      this.color})
       : super(key: key);
 
   @override
@@ -219,8 +219,8 @@ class _BasicButton extends StatelessWidget {
                 color ?? Theme.of(context).primaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(radius),
-                ))),
+              borderRadius: BorderRadius.circular(radius),
+            ))),
         onPressed: () {
           callback();
         },

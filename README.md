@@ -30,19 +30,30 @@ To use this plugin, add crea_radio_button as a dependency in your pubspec.yaml f
 ## Usage
 
 
-```dart
+## Example
 
-final Widget = RadioButtonGroup(
-    vertical: true,
-    options: [RadioOption("1", "1"), RadioOption("2", "2"), RadioOption("3", "3")],
-    callback: (val) {
-      print(val);
-    }
-);
+```dart 
+String radioButtonInput = "";
+
+RadioButtonGroup(
+                      vertical: true,
+                      options: [
+                        RadioOption("1", "1"),
+                        RadioOption("2", "2"),
+                        RadioOption("3", "3")
+                      ],
+                      buttonHeight: 50,
+                      buttonWidth: 50,
+                      defaultIdx: defaultRadioIdx,
+                      callback: (val) {
+                        setState(() {
+                          radioButtonInput = val.text;
+                        });
+                      });
 
 
 ```
 
 ## Additional information
 
-Contribute
+Contribute here: https://github.com/dutkaD/crea_radio
