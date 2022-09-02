@@ -20,6 +20,9 @@ Render a radio button group:
 * vertical or horizontal
 * square or round
 
+## Upcoming features
+* pass Object as an option
+
 ## Limitations
 Currently only supports String as value and button label. An option for RadioGroup is passe via class RadioOption.
 
@@ -28,9 +31,6 @@ Currently only supports String as value and button label. An option for RadioGro
 To use this plugin, add crea_radio_button as a dependency in your pubspec.yaml file.
 
 ## Usage
-
-
-## Example
 
 ```dart 
 String radioButtonInput = "";
@@ -53,6 +53,11 @@ RadioButtonGroup(
 
 
 ```
+
+## Example
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
 
 ## Additional information
 

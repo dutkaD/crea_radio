@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 /// [RadioOption] - an option passed to the [RadioButtonGroup]
 class RadioOption {
   /// an actual value of the option
-  final String value;
+  final Object value;
 
   /// label of the option -> is rendered on the radio button
-  final String text;
+  final String label;
 
-  RadioOption(this.value, this.text);
+  RadioOption(this.value, this.label);
 }
 
 /// Group of radio buttons, where only one option can be selected
@@ -47,7 +47,7 @@ class RadioButtonGroup extends StatefulWidget {
 
   /// Index of the [RadioOption] in [options] that is selected by default
   /// Default value: 0
-  final int defaultIdx;
+  final int? defaultIdx;
 
   /// Shape of the button
   /// Default [circular] = false -> Rectangular shape
@@ -65,7 +65,7 @@ class RadioButtonGroup extends StatefulWidget {
       this.buttonWidth = 50,
       this.circular = false,
       this.spaceBetween = 8.0,
-      this.defaultIdx = 0})
+      this.defaultIdx})
       : super(key: key);
 
   @override
@@ -99,11 +99,14 @@ class RadioButtonGroup extends StatefulWidget {
 }
 
 class _RadioButtonGroupState extends State<RadioButtonGroup> {
-  late String selectedInGroup;
+  late Object selectedInGroup;
 
   @override
   void initState() {
-    selectedInGroup = widget.options[widget.defaultIdx].value;
+    var selectedIdx = widget.defaultIdx;
+    if (selectedIdx != null) {
+      selectedInGroup = widget.options[selectedIdx].value;
+    }
   }
 
   List<Widget> getRadioButtons(List<RadioOption> radioOtions, bool vertical) {
@@ -121,7 +124,7 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
           colorMain: widget.mainColor,
           value: radioOption.value,
           groupValue: selectedInGroup,
-          text: radioOption.text,
+          text: radioOption.label,
           onChanged: (value) {
             setState(() {
               selectedInGroup = value!;
@@ -150,8 +153,8 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
 }
 
 class _RadioButton extends StatelessWidget {
-  final String value;
-  final String groupValue;
+  final Object value;
+  final Object groupValue;
   final String text;
   final Function onChanged;
   final Color? colorSelected;
