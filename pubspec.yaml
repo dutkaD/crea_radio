@@ -1,6 +1,6 @@
 name: crea_radio_button
-description: A simple radio button group, that allow to choose only one option, but can have any amount of elements. Allows rectangular and round buttons, vertical and horizontal.
-version: 0.1.3
+description: A simple radio button group with any amount of options. Allows rectangular and round buttons, vertical and horizontal.
+version: 0.1.4
 repository: https://github.com/dutkaD/crea_radio
 
 environment:

@@ -12,7 +12,6 @@ and the Flutter guide for
 -->
 
 # CreaRadioButton - an easy radio button group
-
 A package to create simple radio buttons.
 
 ## Example
@@ -36,13 +35,13 @@ To use this plugin, add crea_radio_button as a dependency in your pubspec.yaml f
 ```dart 
 String radioButtonInput = "";
 
-RadioButtonGroup(
+ RadioButtonGroup(
                 buttonHeight: 35,
                 buttonWidth: 60,
                 circular: true,
                 mainColor: Colors.grey,
                 selectedColor: Colors.pink.shade400,
-                defaultIdx: defaultOptionIndex,
+                preSelectedIdx: defaultOptionIndex,
                 options: [
                   RadioOption("10.0", "10"),
                   RadioOption("25.0", "25"),
@@ -65,7 +64,7 @@ By default none of the options is preselected. You can specify index of the opti
 
 ### Default selection
 By default none of the options is preselected. You can specify index of the option you want to be preselected/
-`defaultIdx: 0`
+`preSelectedIdx: 0`
 
 ### Callback
 Callback function returns the selected `RadioOption`
@@ -92,6 +91,9 @@ RadioButtonGroup(
 
 
 ```
+
+## TBD
+Selection validation
 
 ## Additional information
 Contribute here: https://github.com/dutkaD/crea_radio
