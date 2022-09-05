@@ -52,7 +52,7 @@ class _AmountContainerState extends State<AmountContainer> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                selectedOption.label,
+                '\$ ${selectedOption.value}',
                 style:
                 TextStyle(fontSize: 20, color: Colors.pinkAccent.shade200),
               ),
@@ -66,7 +66,7 @@ class _AmountContainerState extends State<AmountContainer> {
                 circular: true,
                 mainColor: Colors.grey,
                 selectedColor: Colors.pink.shade400,
-                defaultIdx: defaultOptionIndex,
+                preSelectedIdx: defaultOptionIndex,
                 options: [
                   RadioOption("10.0", "10"),
                   RadioOption("25.0", "25"),

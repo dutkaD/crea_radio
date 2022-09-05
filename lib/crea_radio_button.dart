@@ -46,8 +46,7 @@ class RadioButtonGroup extends StatefulWidget {
   final double spaceBetween;
 
   /// Index of the [RadioOption] in [options] that is selected by default
-  /// Default value: 0
-  final int? defaultIdx;
+  final int? preSelectedIdx;
 
   /// Shape of the button
   /// Default [circular] = false -> Rectangular shape
@@ -65,7 +64,7 @@ class RadioButtonGroup extends StatefulWidget {
       this.buttonWidth = 50,
       this.circular = false,
       this.spaceBetween = 8.0,
-      this.defaultIdx})
+      this.preSelectedIdx})
       : super(key: key);
 
   @override
@@ -80,7 +79,7 @@ class RadioButtonGroup extends StatefulWidget {
     double? buttonHeight,
     double? buttonWidth,
     double? spaceBetween,
-    int? defaultIdx,
+    int? preSelectedIdx,
     bool? circular,
   }) {
     return RadioButtonGroup(
@@ -92,18 +91,18 @@ class RadioButtonGroup extends StatefulWidget {
       buttonHeight: buttonHeight ?? this.buttonHeight,
       buttonWidth: buttonWidth ?? this.buttonWidth,
       spaceBetween: spaceBetween ?? this.spaceBetween,
-      defaultIdx: defaultIdx ?? this.defaultIdx,
+      preSelectedIdx: preSelectedIdx ?? this.preSelectedIdx,
       circular: circular ?? this.circular,
     );
   }
 }
 
 class _RadioButtonGroupState extends State<RadioButtonGroup> {
-  late Object selectedInGroup;
+  Object? selectedInGroup;
 
   @override
   void initState() {
-    var selectedIdx = widget.defaultIdx;
+    var selectedIdx = widget.preSelectedIdx;
     if (selectedIdx != null) {
       selectedInGroup = widget.options[selectedIdx].value;
     }
@@ -154,7 +153,7 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
 
 class _RadioButton extends StatelessWidget {
   final Object value;
-  final Object groupValue;
+  final Object? groupValue;
   final String text;
   final Function onChanged;
   final Color? colorSelected;
