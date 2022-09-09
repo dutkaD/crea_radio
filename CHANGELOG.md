@@ -1,3 +1,8 @@
+## 0.1.5
+* Alignment (main axis, cross axis)
+* Text style of the button can be changed
+* BorderSide for selected option
+
 ## 0.1.4
 * Fix: no preselcted button is possible. DefaultIdx 
 

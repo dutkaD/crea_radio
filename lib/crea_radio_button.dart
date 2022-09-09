@@ -25,8 +25,17 @@ class RadioButtonGroup extends StatefulWidget {
   /// Color which is used when the button is active (selected)
   final Color? selectedColor;
 
+  /// Button text style
+  final TextStyle? textStyle;
+
   /// Color which is used when the button is NOT selected
   final Color mainColor;
+
+  /// Main Axis Alignment of the buttons. Default [MainAxisAlignment.spaceAround]
+  final MainAxisAlignment? mainAxisAlignment;
+
+  /// Cross Axis Alignment of the buttons. Default [CrossAxisAlignment.center]
+  final CrossAxisAlignment? crossAxisAlignment;
 
   /// Direction of the [RadioButtonGroup].
   /// Default: vertical = false -> horizontal display
@@ -53,6 +62,10 @@ class RadioButtonGroup extends StatefulWidget {
   /// Set to true to have round buttons
   final bool circular;
 
+  /// Defines the border for the selected button.
+  /// Transparent and 0 with by default.
+  final BorderSide? selectedBorderSide;
+
   const RadioButtonGroup(
       {Key? key,
       required this.options,
@@ -64,24 +77,31 @@ class RadioButtonGroup extends StatefulWidget {
       this.buttonWidth = 50,
       this.circular = false,
       this.spaceBetween = 8.0,
-      this.preSelectedIdx})
+      this.preSelectedIdx,
+      this.mainAxisAlignment,
+      this.crossAxisAlignment,
+      this.textStyle,
+      this.selectedBorderSide})
       : super(key: key);
 
   @override
   State<RadioButtonGroup> createState() => _RadioButtonGroupState();
 
-  RadioButtonGroup copyWith({
-    List<RadioOption>? options,
-    Function? callback,
-    Color? selectedColor,
-    Color? mainColor,
-    bool? vertical,
-    double? buttonHeight,
-    double? buttonWidth,
-    double? spaceBetween,
-    int? preSelectedIdx,
-    bool? circular,
-  }) {
+  RadioButtonGroup copyWith(
+      {List<RadioOption>? options,
+      Function? callback,
+      Color? selectedColor,
+      Color? mainColor,
+      bool? vertical,
+      double? buttonHeight,
+      double? buttonWidth,
+      double? spaceBetween,
+      MainAxisAlignment? mainAxisAlignment,
+      CrossAxisAlignment? crossAxisAlignment,
+      TextStyle? textStyle,
+      int? preSelectedIdx,
+      bool? circular,
+      BorderSide? borderSide}) {
     return RadioButtonGroup(
       options: options ?? this.options,
       callback: callback ?? this.callback,
@@ -93,6 +113,10 @@ class RadioButtonGroup extends StatefulWidget {
       spaceBetween: spaceBetween ?? this.spaceBetween,
       preSelectedIdx: preSelectedIdx ?? this.preSelectedIdx,
       circular: circular ?? this.circular,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      textStyle: textStyle ?? this.textStyle,
+      selectedBorderSide: borderSide ?? this.selectedBorderSide,
     );
   }
 }
@@ -108,14 +132,14 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
     }
   }
 
-  List<Widget> getRadioButtons(List<RadioOption> radioOtions, bool vertical) {
+  List<Widget> getRadioButtons() {
     List<Widget> radioButtons = [];
 
-    for (RadioOption radioOption in radioOtions) {
+    for (RadioOption radioOption in widget.options) {
       radioButtons.add(Padding(
         padding: EdgeInsets.symmetric(
-            vertical: vertical ? widget.spaceBetween : 0.0,
-            horizontal: vertical ? 0.0 : widget.spaceBetween),
+            vertical: widget.vertical ? widget.spaceBetween : 0.0,
+            horizontal: widget.vertical ? 0.0 : widget.spaceBetween),
         child: _RadioButton(
           buttonHeight: widget.buttonHeight,
           buttonWidth: widget.buttonWidth,
@@ -131,6 +155,8 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
             });
           },
           circular: widget.circular,
+          textStyle: widget.textStyle,
+          borderSide: widget.selectedBorderSide,
         ),
       ));
     }
@@ -139,14 +165,20 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> buttons = getRadioButtons(widget.options, widget.vertical);
+    List<Widget> buttons = getRadioButtons();
     return widget.vertical
         ? Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment:
+                widget.mainAxisAlignment ?? MainAxisAlignment.spaceAround,
+            crossAxisAlignment:
+                widget.crossAxisAlignment ?? CrossAxisAlignment.center,
             children: buttons,
           )
         : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment:
+                widget.mainAxisAlignment ?? MainAxisAlignment.spaceAround,
+            crossAxisAlignment:
+                widget.crossAxisAlignment ?? CrossAxisAlignment.center,
             children: buttons);
   }
 }
@@ -161,6 +193,8 @@ class _RadioButton extends StatelessWidget {
   final double buttonHeight;
   final double buttonWidth;
   final bool circular;
+  final TextStyle? textStyle;
+  final BorderSide? borderSide;
 
   const _RadioButton({
     Key? key,
@@ -173,6 +207,8 @@ class _RadioButton extends StatelessWidget {
     required this.buttonHeight,
     required this.buttonWidth,
     required this.circular,
+    this.textStyle,
+    this.borderSide,
   }) : super(key: key);
 
   @override
@@ -187,7 +223,10 @@ class _RadioButton extends StatelessWidget {
         onChanged(value);
       },
       label: text,
+      textStyle: textStyle,
+      isSelected: isSelected,
       color: isSelected ? colorSelected : colorMain,
+      borderSide: borderSide,
     );
   }
 }
@@ -197,17 +236,23 @@ class _BasicButton extends StatelessWidget {
   final String label;
   final double height;
   final double width;
+  final bool isSelected;
   final double radius;
   final Color? color;
+  final BorderSide? borderSide;
+  final TextStyle? textStyle;
 
   const _BasicButton(
       {Key? key,
       required this.callback,
       required this.label,
-      this.height = 50,
-      this.width = 150,
+      required this.height,
+      required this.width,
       this.radius = 0,
-      this.color})
+      this.color,
+      this.textStyle,
+      this.borderSide,
+      required this.isSelected})
       : super(key: key);
 
   @override
@@ -215,21 +260,36 @@ class _BasicButton extends StatelessWidget {
     return SizedBox(
       height: height,
       width: width,
-      child: ElevatedButton(
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                color ?? Theme.of(context).primaryColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius),
-            ))),
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          shape: new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(20.0)),
+          backgroundColor: color ?? Theme.of(context).primaryColor,
+          side: borderSide == null || !isSelected
+              ? const BorderSide(
+                  color: Colors.transparent,
+                  //     backgroundColor: MaterialStateProperty.all<Color>(
+                  //         color ?? Theme.of(context).primaryColor),
+                )
+              : borderSide,
+        ),
+
+        // ButtonStyle(
+        //     backgroundColor: MaterialStateProperty.all<Color>(
+        //         color ?? Theme.of(context).primaryColor),
+        //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //         RoundedRectangleBorder(
+        //       // side:  BorderSide(width: 0, color: color ?? Colors.red),
+        //       borderRadius: BorderRadius.circular(radius),
+        //     ))),
         onPressed: () {
           callback();
         },
         child: Center(
           child: Text(
             label,
-            style: const TextStyle(fontSize: 16.0),
+            style:
+                textStyle ?? const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),
       ),
