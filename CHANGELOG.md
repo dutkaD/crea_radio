@@ -1,20 +1,10 @@
-## 0.1.5
+## 0.2.0
 * Alignment (main axis, cross axis)
 * Text style of the button can be changed
 * BorderSide for selected option
 
-## 0.1.4
-* Fix: no preselcted button is possible. DefaultIdx 
-
-## 0.1.3
-* Update documentation
-
-## 0.1.2
-* Fix image in README
-
-## 0.1.1
-* Update README
-* Update example
+## 0.1.1 - 0.1.4
+* Fixes and refactorings
 
 ## 0.1.0
 * `RadioOption` accepts any object as it's value

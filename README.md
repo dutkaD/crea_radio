@@ -15,7 +15,8 @@ and the Flutter guide for
 A package to create simple radio buttons.
 
 ## Example
-![alt text](https://github.com/dutkaD/crea_radio/blob/main/assets/radio1.png?raw=true)
+![alt text](https://github.com/dutkaD/crea_radio/blob/main/assets/output.gif "Example options no border")
+![alt text](https://github.com/dutkaD/crea_radio/blob/main/assets/output2.gif "example options with border")
 
 ## Features
 
@@ -61,10 +62,8 @@ String radioButtonInput = "";
 By default none of the options is preselected. You can specify index of the option you want to be preselected/
 `defaultIdx: 0`
 
-
-### Default selection
-By default none of the options is preselected. You can specify index of the option you want to be preselected/
-`preSelectedIdx: 0`
+### Add Border for seleted option
+By default there is no Border on a button. `selectedBorderSide can be used to add border for the selected option.
 
 ### Callback
 Callback function returns the selected `RadioOption`
@@ -91,9 +90,6 @@ RadioButtonGroup(
 
 
 ```
-
-## TBD
-Selection validation
 
 ## Additional information
 Contribute here: https://github.com/dutkaD/crea_radio
