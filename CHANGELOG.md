@@ -1,3 +1,6 @@
+## 0.5.0
+* Unselect is enabled
+
 ## 0.4.0
 * Change radio option Object to Generic
 

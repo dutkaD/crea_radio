@@ -78,6 +78,10 @@ class RadioButtonGroup extends StatefulWidget {
   /// Set to true to have round buttons
   final bool circular;
 
+  /// When pressing the selected button, the value of the group will be set to null
+  /// Default: false
+  final bool unselectEnabled;
+
   /// Defines the border for the selected button.
   /// Transparent and 0 with by default.
   final BorderSide? selectedBorderSide;
@@ -99,7 +103,8 @@ class RadioButtonGroup extends StatefulWidget {
       this.textStyle,
       this.selectedBorderSide,
       this.multilineNumber = 1,
-      this.betweenMultiLines = 0})
+      this.betweenMultiLines = 0,
+      this.unselectEnabled = false})
       : super(key: key);
 
   @override
@@ -120,7 +125,8 @@ class RadioButtonGroup extends StatefulWidget {
       TextStyle? textStyle,
       int? preSelectedIdx,
       bool? circular,
-      BorderSide? borderSide}) {
+      BorderSide? borderSide,
+      bool? allowUnSelect}) {
     return RadioButtonGroup(
       options: options ?? this.options,
       callback: callback ?? this.callback,
@@ -137,6 +143,7 @@ class RadioButtonGroup extends StatefulWidget {
       textStyle: textStyle ?? this.textStyle,
       selectedBorderSide: borderSide ?? this.selectedBorderSide,
       betweenMultiLines: betweenMultiLines ?? this.betweenMultiLines,
+      unselectEnabled: allowUnSelect ?? this.unselectEnabled,
     );
   }
 }
@@ -168,10 +175,15 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
           value: radioOption.value,
           groupValue: selectedInGroup,
           text: radioOption.label,
+          unselectEnabled: widget.unselectEnabled,
           onChanged: (value) {
             setState(() {
-              selectedInGroup = value!;
-              widget.callback(radioOption);
+              selectedInGroup = value;
+              if (value == null) {
+                widget.callback(RadioOption(null, ""));
+              } else {
+                widget.callback(radioOption);
+              }
             });
           },
           circular: widget.circular,
@@ -251,6 +263,7 @@ class _RadioButton extends StatelessWidget {
   final bool circular;
   final TextStyle? textStyle;
   final BorderSide? borderSide;
+  final bool unselectEnabled;
 
   const _RadioButton({
     Key? key,
@@ -265,6 +278,7 @@ class _RadioButton extends StatelessWidget {
     required this.circular,
     this.textStyle,
     this.borderSide,
+    required this.unselectEnabled,
   }) : super(key: key);
 
   @override
@@ -276,7 +290,11 @@ class _RadioButton extends StatelessWidget {
       height: buttonHeight,
       width: buttonWidth,
       callback: () {
-        onChanged(value);
+        if (isSelected && unselectEnabled) {
+          onChanged(null);
+        } else {
+          onChanged(value);
+        }
       },
       label: text,
       textStyle: textStyle,

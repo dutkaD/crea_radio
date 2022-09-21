@@ -15,8 +15,12 @@ and the Flutter guide for
 A package to create simple radio buttons.
 
 ## Example
+### Change border on slected
 ![alt text](https://github.com/dutkaD/crea_radio/blob/main/assets/output.gif "Example options no border")
+### Change background color on selected
 ![alt text](https://github.com/dutkaD/crea_radio/blob/main/assets/output2.gif "example options with border")
+### Unselect is enabled
+![alt text](https://github.com/dutkaD/crea_radio/blob/main/assets/unselect.gif "example options unselect")
 
 ## Features
 

@@ -75,6 +75,7 @@ class _FrequencyContainerState extends State<FrequencyContainer> {
             ),
             RadioButtonGroup(
                 options: options,
+                unselectEnabled: true,
                 textStyle: const TextStyle(fontSize: 15, color: Colors.white),
                 mainAxisAlignment: MainAxisAlignment.center,
                 selectedColor: Colors.grey.shade400,
@@ -107,7 +108,7 @@ class AmountContainer extends StatefulWidget {
 
 class _AmountContainerState extends State<AmountContainer> {
   final int defaultOptionIndex = 0;
-  late AmountOption selectedOption;
+  late AmountOption? selectedOption;
   List<RadioOption> options = [
     RadioOption(AmountOption("\$", "EURO", 10.00), "10"),
     RadioOption(AmountOption("\$", "EURO", 25.00), "25"),
@@ -138,7 +139,7 @@ class _AmountContainerState extends State<AmountContainer> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '\$ ${selectedOption.amount}',
+                '\$ ${selectedOption?.amount ?? ""}',
                 style:
                     TextStyle(fontSize: 20, color: Colors.pinkAccent.shade200),
               ),
