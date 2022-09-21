@@ -1,3 +1,9 @@
+## 0.4.0
+* Change radio option Object to Generic
+
+## 0.3.0
+* Multirows and multicolumns
+
 ## 0.2.0
 * Alignment (main axis, cross axis)
 * Text style of the button can be changed

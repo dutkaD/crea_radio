@@ -1,15 +1,20 @@
 import 'package:crea_radio_button/crea_radio_button.dart';
 import 'package:flutter/material.dart';
 
+class AmountOption {
+  String currencySign;
+  String currencyName;
+  double amount;
+
+  AmountOption(this.currencySign, this.currencyName, this.amount);
+}
+
 void main() {
   runApp(MaterialApp(
     home: Scaffold(
       body: Center(
         child: Column(
-          children: const [
-            FrequencyContainer(),
-            AmountContainer()
-          ],
+          children: const [FrequencyContainer(), AmountContainer()],
         ),
       ),
     ),
@@ -27,6 +32,7 @@ class FrequencyContainer extends StatefulWidget {
 
 class _FrequencyContainerState extends State<FrequencyContainer> {
   String label = "";
+
   List<RadioOption> options = [
     RadioOption("MONTHLY", "Monthly"),
     RadioOption("YEARLY", "Yearly")
@@ -73,7 +79,8 @@ class _FrequencyContainerState extends State<FrequencyContainer> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 selectedColor: Colors.grey.shade400,
                 mainColor: Colors.grey.shade400,
-                selectedBorderSide: BorderSide(width: 2, color: Colors.pink.shade300),
+                selectedBorderSide:
+                    BorderSide(width: 2, color: Colors.pink.shade300),
                 buttonWidth: 120,
                 buttonHeight: 35,
                 callback: (RadioOption val) {
@@ -99,19 +106,19 @@ class AmountContainer extends StatefulWidget {
 }
 
 class _AmountContainerState extends State<AmountContainer> {
-  final int defaultOptionIndex = 3;
-  late RadioOption selectedOption;
+  final int defaultOptionIndex = 0;
+  late AmountOption selectedOption;
   List<RadioOption> options = [
-    RadioOption("10.0", "10"),
-    RadioOption("25.0", "25"),
-    RadioOption("50.0", "50"),
-    RadioOption("100.0", "100")
+    RadioOption(AmountOption("\$", "EURO", 10.00), "10"),
+    RadioOption(AmountOption("\$", "EURO", 25.00), "25"),
+    RadioOption(AmountOption("\$", "EURO", 50.00), "50"),
+    RadioOption(AmountOption("\$", "EURO", 100.00), "100"),
   ];
 
   @override
   void initState() {
     super.initState();
-    selectedOption = options[defaultOptionIndex]; // set default option
+    selectedOption = options[defaultOptionIndex].value;
   }
 
   @override
@@ -131,9 +138,9 @@ class _AmountContainerState extends State<AmountContainer> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '\$ ${selectedOption.value}',
+                '\$ ${selectedOption.amount}',
                 style:
-                TextStyle(fontSize: 20, color: Colors.pinkAccent.shade200),
+                    TextStyle(fontSize: 20, color: Colors.pinkAccent.shade200),
               ),
             ),
             const SizedBox(
@@ -149,7 +156,7 @@ class _AmountContainerState extends State<AmountContainer> {
                 options: options,
                 callback: (RadioOption val) {
                   setState(() {
-                    selectedOption = val;
+                    selectedOption = val.value;
                   });
                 })
           ],

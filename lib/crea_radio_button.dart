@@ -3,15 +3,23 @@ library crea_radio_button;
 import 'package:flutter/material.dart';
 
 /// [RadioOption] - an option passed to the [RadioButtonGroup]
-class RadioOption {
+class RadioOption<T> {
   /// an actual value of the option
-  final Object value;
+  final T value;
 
   /// label of the option -> is rendered on the radio button
   final String label;
 
   RadioOption(this.value, this.label);
 }
+
+// class RadioValue<T> {
+//   const RadioValue({
+//     required this.value,
+//   });
+//   /// The value represented by this radio button.
+//   final T value;
+// }
 
 /// Group of radio buttons, where only one option can be selected
 /// Requires list of [options] and [callback] function
@@ -21,6 +29,11 @@ class RadioButtonGroup extends StatefulWidget {
 
   /// Callback function
   final Function callback;
+
+  /// How many rows or columns should be options devided into
+  /// Default: 1. Options are places in a single column or row
+  /// Should be > 0
+  final int multilineNumber;
 
   /// Color which is used when the button is active (selected)
   final Color? selectedColor;
@@ -47,6 +60,9 @@ class RadioButtonGroup extends StatefulWidget {
 
   /// Width of the option button in the group
   final double buttonWidth;
+
+  /// Width between columns or rows of radio options
+  final double betweenMultiLines;
 
   /// Space between buttons
   /// Default value:  8.0
@@ -81,7 +97,9 @@ class RadioButtonGroup extends StatefulWidget {
       this.mainAxisAlignment,
       this.crossAxisAlignment,
       this.textStyle,
-      this.selectedBorderSide})
+      this.selectedBorderSide,
+      this.multilineNumber = 1,
+      this.betweenMultiLines = 0})
       : super(key: key);
 
   @override
@@ -96,6 +114,7 @@ class RadioButtonGroup extends StatefulWidget {
       double? buttonHeight,
       double? buttonWidth,
       double? spaceBetween,
+      double? betweenMultiLines,
       MainAxisAlignment? mainAxisAlignment,
       CrossAxisAlignment? crossAxisAlignment,
       TextStyle? textStyle,
@@ -117,6 +136,7 @@ class RadioButtonGroup extends StatefulWidget {
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       textStyle: textStyle ?? this.textStyle,
       selectedBorderSide: borderSide ?? this.selectedBorderSide,
+      betweenMultiLines: betweenMultiLines ?? this.betweenMultiLines,
     );
   }
 }
@@ -167,19 +187,55 @@ class _RadioButtonGroupState extends State<RadioButtonGroup> {
   Widget build(BuildContext context) {
     List<Widget> buttons = getRadioButtons();
     return widget.vertical
-        ? Column(
-            mainAxisAlignment:
-                widget.mainAxisAlignment ?? MainAxisAlignment.spaceAround,
-            crossAxisAlignment:
-                widget.crossAxisAlignment ?? CrossAxisAlignment.center,
-            children: buttons,
+        ? Row(
+            children: [
+              Column(
+                mainAxisAlignment:
+                    widget.mainAxisAlignment ?? MainAxisAlignment.spaceAround,
+                crossAxisAlignment:
+                    widget.crossAxisAlignment ?? CrossAxisAlignment.center,
+                children: buttons,
+              ),
+            ],
           )
-        : Row(
+        : Column(
+            children: getRows(widget.multilineNumber, buttons),
+          );
+  }
+
+  List<Widget> getRows(int number, List<Widget> buttons) {
+    if (number == 1) {
+      return [
+        Row(
             mainAxisAlignment:
                 widget.mainAxisAlignment ?? MainAxisAlignment.spaceAround,
             crossAxisAlignment:
                 widget.crossAxisAlignment ?? CrossAxisAlignment.center,
-            children: buttons);
+            children: buttons)
+      ];
+    } else {
+      List<Widget> rows = [];
+      int numPerRow = (buttons.length / number).ceil();
+      int start = 0;
+      for (var i = 0; i < number; i += 1) {
+        rows.add(Padding(
+          padding: EdgeInsets.symmetric(vertical: widget.betweenMultiLines / 2),
+          child: Row(
+            mainAxisAlignment:
+                widget.mainAxisAlignment ?? MainAxisAlignment.spaceAround,
+            crossAxisAlignment:
+                widget.crossAxisAlignment ?? CrossAxisAlignment.center,
+            children: buttons.sublist(
+                start,
+                start + numPerRow > buttons.length
+                    ? buttons.length
+                    : start + numPerRow),
+          ),
+        ));
+        start = start + numPerRow;
+      }
+      return rows;
+    }
   }
 }
 
@@ -262,26 +318,15 @@ class _BasicButton extends StatelessWidget {
       width: width,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(20.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           backgroundColor: color ?? Theme.of(context).primaryColor,
           side: borderSide == null || !isSelected
               ? const BorderSide(
                   color: Colors.transparent,
-                  //     backgroundColor: MaterialStateProperty.all<Color>(
-                  //         color ?? Theme.of(context).primaryColor),
                 )
               : borderSide,
         ),
-
-        // ButtonStyle(
-        //     backgroundColor: MaterialStateProperty.all<Color>(
-        //         color ?? Theme.of(context).primaryColor),
-        //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        //         RoundedRectangleBorder(
-        //       // side:  BorderSide(width: 0, color: color ?? Colors.red),
-        //       borderRadius: BorderRadius.circular(radius),
-        //     ))),
         onPressed: () {
           callback();
         },
